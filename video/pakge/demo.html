@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>大纲-day01</h1>
+<h2>初识Nodejs</h2>
+<ul>
+<li>JavaScript是什么？</li>
+<li>JavaScript可以运行在哪里？</li>
+</ul>
+<p><img src="img/1.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>浏览器</th>
+<th>内核</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IE</td>
+<td>Trident</td>
+</tr>
+<tr>
+<td>FireFox</td>
+<td>Gecko</td>
+</tr>
+<tr>
+<td>Chrome</td>
+<td>WebKit</td>
+</tr>
+<tr>
+<td>Safari</td>
+<td>WebKit</td>
+</tr>
+<tr>
+<td>Opera</td>
+<td>Presto</td>
+</tr>
+<tr>
+<td>Edge</td>
+<td>Chakra</td>
+</tr>
+</tbody>
+</table>
+<h2>Node.js的诞生</h2>
+<p><img src="img/2.png" alt="image"></p>
+<ul>
+<li>作者Ryan Dahl 瑞恩·达尔
+<ul>
+<li>2004 纽约 读数学博士</li>
+<li>2006 退学到智利 转向开发</li>
+<li>2009.5对外宣布node项目，年底js大会发表演讲</li>
+<li>2010 加入Joyent云计算公司</li>
+<li>2012 退居幕后</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Node.js 是一种建立在Google Chrome’s v8 engine上的 non-blocking (非阻塞）, event-driven （基于事件的） I/O平台.
+Node.js平台使用的开发语言是JavaScript，平台提供了操作系统低层的API，方便做服务器端编程，具体包括文件操作、进程操作、通信操作等系统模块</p>
+</blockquote>
+<h2>Node.js可以用来做什么？</h2>
+<ul>
+<li>具有复杂逻辑的动态网站</li>
+<li>WebSocket服务器</li>
+<li>命令行工具</li>
+<li>带有图形界面的本地应用程序</li>
+<li>......</li>
+</ul>
+<h2>终端基本使用</h2>
+<h3>打开应用</h3>
+<ul>
+<li>notepad 打开记事本</li>
+<li>mspaint 打开画图</li>
+<li>calc 打开计算机</li>
+<li>write 写字板</li>
+<li>sysdm.cpl 打开环境变量设置窗口</li>
+</ul>
+<h3>常用命令</h3>
+<ul>
+<li>md 创建目录</li>
+<li>rmdir(rd) 删除目录，目录内没有文档。</li>
+<li>echo on a.txt 创建空文件</li>
+<li>del 删除文件</li>
+<li>rm 文件名 删除文件</li>
+<li>cat 文件名 查看文件内容</li>
+<li>cat &gt; 文件名 向文件中写上内容。</li>
+</ul>
+<h2>Node.js开发环境准备</h2>
+<ol>
+<li>
+<p>普通安装方式<a href="https://nodejs.org/zh-cn/">官方网站</a></p>
+</li>
+<li>
+<p>多版本安装方式</p>
+<ul>
+<li>卸载已有的Node.js</li>
+<li>下载<a href="https://github.com/coreybutler/nvm-windows">nvm</a></li>
+<li>在C盘创建目录dev</li>
+<li>在dev目中中创建两个子目录nvm和nodejs</li>
+<li>并且把nvm包解压进去nvm目录中</li>
+<li>在install.cmd文件上面右键选择【以管理员身份运行】</li>
+<li>打开的cmd窗口直接回车会生成一个settings.txt文件，修改文件中配置信息</li>
+<li>配置nvm和Node.js环境变量
+<ul>
+<li>NVM_HOME:C:\dev\nvm</li>
+<li>NVM_SYMLINK:C:\dev\nodejs</li>
+</ul>
+</li>
+<li>把配置好的两个环境变量加到Path中</li>
+</ul>
+</li>
+</ol>
+<h2>nvm常用的命令</h2>
+<ul>
+<li>nvm list 查看当前安装的Node.js所有版本</li>
+<li>nvm install 版本号 安装指定版本的Node.js</li>
+<li>nvm uninstall 版本号 卸载指定版本的Node.js</li>
+<li>nvm use 版本号 选择指定版本的Node.js</li>
+</ul>
+<h2>Node.js之HelloWorld</h2>
+<ul>
+<li>命令行方式REPL</li>
+<li>运行文件方式</li>
+<li>全局对象概览</li>
+</ul>
+<h2>服务器端模块化</h2>
+<ul>
+<li>服务器端模块化规范CommonJS与实现Node.js</li>
+<li>模块导出与引入</li>
+<li>模块导出机制分析</li>
+<li>模块加载规则
+<ul>
+<li>模块查找 不加扩展名的时候会按照如下后缀顺序进行查找 .js .json .node</li>
+</ul>
+</li>
+<li>模块分类
+<ul>
+<li>自定义模块</li>
+<li>系统核心模块
+<ul>
+<li>fs 文件操作</li>
+<li>http 网络操作</li>
+<li>path 路径操作</li>
+<li>querystring 查询参数解析</li>
+<li>url url解析</li>
+<li>......</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>ES6常用语法</h2>
+<ul>
+<li>变量声明let与const</li>
+<li>变量的解构赋值
+<ul>
+<li>数组解构赋值</li>
+<li>对象解构赋值</li>
+<li>字符串解构赋值</li>
+</ul>
+</li>
+<li>字符串扩展
+<ul>
+<li>includes()</li>
+<li>startsWith()</li>
+<li>endsWith()</li>
+<li>模板字符串</li>
+</ul>
+</li>
+<li>函数扩展
+<ul>
+<li>参数默认值</li>
+<li>参数结构赋值</li>
+<li>rest参数</li>
+<li>扩展运算符</li>
+<li>箭头函数</li>
+</ul>
+</li>
+<li>类与继承</li>
+</ul>
+
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "no123": {
+    "chinese": "120",
+    "math": "130",
+    "english": "140",
+    "summery": "150"
+  },
+  "no124": {
+    "chinese": "130",
+    "math": "120",
+    "english": "110",
+    "summery": "150"
+  },
+  "no125": {
+    "chinese": "110",
+    "math": "100",
+    "english": "110",
+    "summery": "10"
+  }
+}
