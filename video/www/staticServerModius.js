@@ -6,10 +6,13 @@ const fs = require('fs');
 // 引入编码集合
 const mime = require('./mime.json');
 exports.staticServer = (req, res, root) => {
+  console.log(root);
+  console.log(req.url);
+
   fs.readFile(path.join(root, req.url), (err, data) => {
     if (err) {
       res.writeHead(404, {
-        'Content-Type': 'text/html;chartset=utf8'
+        'Content-Type': 'text/html;charset=utf8'
       });
       res.end('页面未找到');
     } else {
