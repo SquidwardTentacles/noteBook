@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(function() {
+        $('#subbtn').click(function() {
+          console.log('click');
+          let obj = {
+            username: $('#username').val(),
+            password: $('#password').val()
+          };
+          console.log($('from:eq(0)').serialize());
+          $.ajax({
+            type: 'post',
+            url: 'http://localhost:3000/login',
+            // 发送json格式的请求需要制定请求的数据类型
+            contentType: 'application/json',
+            dataType: 'text',
+            // data: $('form:eq(0)').serialize(),
+            data: JSON.stringify(obj),
+            success: function(data) {
+              console.log(data);
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <form action="http://localhost:3000/login" method="post">
+      账户: <input type="text" name="username" id="username" /><br />
+      密码: <input type="text" name="password" id="password" /><br />
+      <input type="button" value="登录" id="subbtn" />
+    </form>
+    <!-- <form action="http://localhost:3000/loginget" method="get">
+      账户: <input type="text" name="username" id="" /><br />
+      密码: <input type="text" name="password" id="" /><br />
+      <input type="submit" value="登录" />
+    </form> -->
+  </body>
+</html>
