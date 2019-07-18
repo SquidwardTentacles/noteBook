@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <form action="/editBook" method="post">
+    <!-- 需要保存一个影藏的id -->
+    <input type="hidden" name="id" value="{{id}}">
+   名称: <input type="hiddentext" name="name" value="{{name}}"></br>
+   作者: <input type="text" name="auther" value="{{auther}}"></br>
+   分类: <input type="text" name="category" value="{{category}}"></br>
+   描述: <input type="text" name="desc" value="{{descrption}}"></br>
+   <input type="submit" value="提交">
+  </form>
+</body>
+</html>

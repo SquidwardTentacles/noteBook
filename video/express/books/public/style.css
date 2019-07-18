@@ -1,0 +1,20 @@
+h3 {
+  height: 50px;
+  background-color: lightgreen;
+  text-align: center;
+  line-height: 50px;
+}
+table {
+  width: 100%;
+  border-right: 1px solid orange;
+  border-bottom: 1px solid orange;
+  background-color: lightblue;
+}
+table td,
+th {
+  border-left: 1px solid orange;
+  border-top: 1px solid orange;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+}

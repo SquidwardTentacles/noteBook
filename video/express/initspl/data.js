@@ -1,0 +1,1 @@
+insert into books (name,auther,category,descrption) values ('西游记','吴承恩','文学','道教与佛教的纷争');insert into books (name,auther,category,descrption) values ('天龙八部','金庸','文学','一个刀光剑影的时代');
