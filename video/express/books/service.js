@@ -14,34 +14,16 @@ let selectAll = res => {
   sqlOptions.base(sql, sdata, callback => {
     data = callback;
     if (res) {
-      console.log('daat', data);
-
       res.render('index', { list: data });
     }
   });
 };
 exports.showIndex = (req, res) => {
-  console.log('showAll');
-
   selectAll(res);
 };
 // 渲染添加页面
 exports.toAddBook = (req, res) => {
   res.render('addBook', {});
-};
-let writePage = (obj, res) => {
-  fs.writeFile(
-    path.join(__dirname, 'data.json'),
-    JSON.stringify(obj, null, 4),
-    err => {
-      if (err) {
-        res.send('err');
-      } else {
-        // 重定向
-        res.redirect('/');
-      }
-    }
-  );
 };
 // 添加书籍
 exports.addBook = (req, res) => {
@@ -78,14 +60,14 @@ exports.editBook = (req, res) => {
         'update books set name=?,auther=?,category=?,descrption=? where id=?';
       let datab = [];
       for (const key in dObj) {
-        datab.push(dObj[key]);
+        if (isNaN(Number(dObj[key]))) {
+          // 如果数组中的内容不能转成数字 即numer后是nan 即文字内容就能够添加进数组 id不用添加进数组
+          datab.push(dObj[key]);
+        }
       }
       datab.push(element.id);
-      console.log(datab);
-
       sqlOptions.base(sql, datab, callback => {
         res.redirect('/');
-        // res.render('/', { list: data });
       });
     }
   });
@@ -94,13 +76,15 @@ exports.editBook = (req, res) => {
 // 删除图书
 exports.delBook = (req, res) => {
   let obj = req.query;
-  console.log(obj);
   data.forEach((element, index) => {
     if (element.id == obj.id) {
-      data.splice(index, 1);
+      let sql = 'delete from books where id=?';
+      let datas = [Number(obj.id)];
+      sqlOptions.base(sql, datas, callback => {
+        res.redirect('/');
+        // res.render('/', { list: data });
+        return;
+      });
     }
   });
-  console.log(data);
-
-  writePage(data, res);
 };
