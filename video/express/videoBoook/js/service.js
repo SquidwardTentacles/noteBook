@@ -3,8 +3,6 @@ const db = require('./db.js');
 
 // 进入登录页
 exports.toLogin = (req, res) => {
-  console.log('login');
-
   res.render('login', {});
 };
 // 进入注册页
@@ -19,9 +17,10 @@ exports.login = (req, res) => {
   let data = [reqObj.username, reqObj.password];
   db.base(sql, data, callback => {
     if (callback.total == 0) {
-      res.send('login err');
+      // res.send('login err');
     } else {
-      res.redirect('book');
+      res.json({errcode:1})
+      // res.redirect('book');
     }
   });
 };
@@ -40,7 +39,8 @@ exports.book = (req, res) => {
   let sql = 'select * from books';
   let data = [];
   db.base(sql, data, result => {
-    res.render('book', { list: result });
+    // res.render('book', { list: result });
+    res.json({result})
   });
 };
 // 渲染添加图书
@@ -72,7 +72,6 @@ exports.editBook = (req, res) => {
     'update books set name=?,auther=?,category=?,descrption=? where id=?';
   let data = [dobj.name, dobj.auther, dobj.category, dobj.desc, dobj.id];
   db.base(sql, data, result => {
-    console.log(result);
     if (result.affectedRows == 1) {
       res.redirect('book');
     } else {
