@@ -4,6 +4,9 @@
 
 ### 运行命令 node server3.js 浏览器输入 localhost:3000 访问
 
+
+# nodeProject 基于vue3.0图书管理项目(node服务)
+
 ### 数据库的链接地址为 localhost
 
 ### 用户名和密码为 root
