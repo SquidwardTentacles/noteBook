@@ -49,3 +49,67 @@ exports.search = (req, res) => {
     }
   });
 };
+// 根据id查询单条数据 searchBoookById
+exports.searchBookById = (req, res) => {
+  let dobj = req.query;
+  let sql = "select * from books where id = ?";
+  let data = [dobj.id];
+  db(sql, data, callback => {
+    if (callback != "") {
+      obj.errcode = 0;
+      obj.data = callback[0];
+    } else {
+      obj.errcode = 1;
+      obj.message = "查询失败";
+    }
+    res.json(obj);
+  });
+};
+// 更新单条数据
+exports.updateEdit = (req, res) => {
+  let dobj = req.body;
+  let sql =
+    "update books set name=?,auther=?,category=?,descrption=? where id =?";
+  let data = [dobj.name, dobj.auther, dobj.category, dobj.descrption, dobj.id];
+  db(sql, data, callback => {
+    if (callback.affectedRows === 1) {
+      obj.errcode = 0;
+      obj.message = "更新成功";
+    } else {
+      obj.errcode = 1;
+      obj.message = "更新失败";
+    }
+    res.json(obj);
+  });
+};
+// 删除数据
+exports.deleteBook = (req, res) => {
+  let dobj = req.query;
+  let sql = "delete from books where id=?";
+  let data = [dobj.id];
+  db(sql, data, callback => {
+    if (callback.affectedRows === 1) {
+      obj.errcode = 0;
+      obj.message = "删除成功";
+    } else {
+      obj.errcode = 1;
+      obj.message = "删除失败";
+    }
+    res.json(obj);
+  });
+};
+// 新增
+exports.insertBooks = (req, res) => {
+  let dobj = req.body;
+  let sql = "insert into books set ?";
+  db(sql, dobj, callback => {
+    if (callback.affectedRows === 1) {
+      obj.errcode = 0;
+      obj.message = "新增成功";
+    } else {
+      obj.errcode = 1;
+      obj.message = "新增失败";
+    }
+    res.json(obj);
+  });
+};

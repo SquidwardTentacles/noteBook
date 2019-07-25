@@ -1,28 +1,33 @@
 <template>
   <div class="login">
     <div class="inbox">
-      <el-form :model="ruleForm"
-               status-icon
-               :rules="rules"
-               ref="ruleForm"
-               label-width="100px"
-               class="demo-ruleForm">
-        <el-form-item label="账号"
-                      prop="username">
-          <el-input type="text"
-                    v-model="ruleForm.username"
-                    placeholder="请输入账号"
-                    autocomplete="off"></el-input>
+      <el-form
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="账号" prop="username">
+          <el-input
+            type="text"
+            v-model="ruleForm.username"
+            placeholder="请输入账号"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="密码"
-                      prop="password">
-          <el-input v-model.number="ruleForm.password"
-                    placeholder="请输入密码"
-                    type="text"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input
+            v-model.number="ruleForm.password"
+            placeholder="请输入密码"
+            type="text"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary"
-                     @click="submitForm('ruleForm', 0)">登录</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm', 0)"
+            >登录</el-button
+          >
           <el-button @click="submitForm('ruleForm', 1)">注册</el-button>
         </el-form-item>
       </el-form>
@@ -32,7 +37,7 @@
 <script>
 import qs from "qs";
 export default {
-  data () {
+  data() {
     var checkAge = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
@@ -71,7 +76,7 @@ export default {
   },
 
   methods: {
-    submitForm (formName, i) {
+    submitForm(formName, i) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let params = {
@@ -86,8 +91,16 @@ export default {
             .then(res => {
               if (res.data.errcode === 0) {
                 this.$message.success(res.data.message);
+                window.sessionStorage.setItem(
+                  "username",
+                  JSON.stringify(this.ruleForm.username)
+                );
+                this.$store.commit("usernameFunc", this.ruleForm.username);
+                this.$router.push({
+                  path: "/books"
+                });
               } else {
-                this.$message.error(res.data.errcode);
+                this.$message.error(res.data.message);
               }
             })
             .catch(err => {
@@ -106,7 +119,7 @@ export default {
 .login {
   width: 100%;
   .inbox {
-    width: 50%;
+    width: 450px;
     position: absolute;
     top: 10%;
     left: 50%;

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
-let url = "http://localhost:3100";
+let url = "http://192.168.1.3:3100";
 // Vue.prototype.HOME = HOME;
 axios.defaults.baseURL = url;
 // axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
