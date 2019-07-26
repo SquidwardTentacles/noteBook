@@ -14,6 +14,11 @@ exports.login = (req, res) => {
     } else {
       obj.errcode = 0;
       obj.message = "登录成功";
+      let sql = "select * from userinfo where username=? and password=?";
+      let data = [dobj.username, dobj.password];
+      db(sql, data, callback => {
+        console.log(callback);
+      });
     }
     res.json(obj);
   });

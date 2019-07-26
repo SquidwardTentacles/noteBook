@@ -18,6 +18,6 @@ app.use(function(req, res, next) {
 });
 app.use(router);
 
-app.listen(3100, "192.168.1.3", () => {
+app.listen(3100, "192.168.1.7", () => {
   console.log("running");
 });
