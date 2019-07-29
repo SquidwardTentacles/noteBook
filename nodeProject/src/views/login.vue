@@ -82,14 +82,18 @@ export default {
                   JSON.stringify(this.ruleForm.username)
                 );
                 this.$store.commit("usernameFunc", this.ruleForm.username);
+                this.$store.commit("countChange", res.data.count);
+                this.$store.commit("changeTotal", res.data.totalUser);
                 this.$router.push({
                   path: "/books"
                 });
               } else {
                 this.$message.error(res.data.message);
+                console.log(res.data.message);
               }
             })
             .catch(err => {
+              this.$message.error("请求失败！请稍后重试！");
               console.log(err);
             });
         } else {

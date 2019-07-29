@@ -5,6 +5,8 @@ import elementUi from "element-ui";
 import store from "./assets/js/store";
 import "element-ui/lib/theme-chalk/index.css";
 import "./assets/js/axios";
+var echarts = require("echarts");
+Vue.prototype.echarts = echarts;
 Vue.use(elementUi);
 
 router.beforeEach((to, from, next) => {

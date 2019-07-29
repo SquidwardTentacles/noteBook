@@ -11,31 +11,54 @@ exports.login = (req, res) => {
     if (callback[0].total == 0) {
       obj.message = "账号或密码错误";
       obj.errcode = 1;
+      res.json(obj);
     } else {
       obj.errcode = 0;
       obj.message = "登录成功";
-      let sql = "select * from userinfo where username=? and password=?";
-      let data = [dobj.username, dobj.password];
-      db(sql, data, callback => {
-        console.log(callback);
+      // 查询总的用户数量
+      let searchSqlA = "select * from userinfo";
+      let sData = [];
+      db(searchSqlA, sData, allBack => {
+        obj.totalUser = allBack.length;
+        // 登录成功后更新访问次数
+        let searchSql = "select * from userinfo where username =?";
+        let searchData = [dobj.username];
+        db(searchSql, searchData, back => {
+          back[0].count++;
+          let updateSql = "update userinfo set count=? where id=?";
+          let data = [back[0].count, back[0].id];
+          db(updateSql, data, up => {
+            // console.log(up);
+          });
+          obj.count = back[0].count;
+          res.json(obj);
+        });
       });
     }
-    res.json(obj);
   });
 };
 // 注册
 exports.register = (req, res) => {
   let dobj = req.body;
-  let sql = "insert into userinfo set ?";
-  db(sql, dobj, callback => {
-    obj = {};
-    if (callback.affectedRows === 1) {
-      obj.message = "注册成功";
-      obj.errcode = 0;
+  let selectSql = "select count(*) as total from userinfo where username =?";
+  let data = [dobj.username];
+  db(selectSql, data, callback => {
+    if (callback[0].total === 0) {
+      let sql = "insert into userinfo set ?";
+      db(sql, dobj, callback => {
+        if (callback.affectedRows === 1) {
+          obj.message = "注册成功";
+          obj.errcode = 0;
+        } else {
+          obj.errcode = 1;
+        }
+        res.json(obj);
+      });
     } else {
+      obj.message = "当前账号已注册";
       obj.errcode = 1;
+      res.json(obj);
     }
-    res.json(obj);
   });
 };
 // 查询

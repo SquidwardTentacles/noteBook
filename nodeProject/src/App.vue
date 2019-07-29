@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <div class="usersessonB"
-         v-show="this.$store.state.username">
+    <div class="usersessonB" v-show="this.$store.state.username">
       <transition name="fade">
-        <div @mouseenter="loginOut = 1"
-             @mouseleave="loginOut = 0">
+        <div
+          @mouseenter="loginOut = 1"
+          @mouseleave="loginOut = 0"
+          class="user-sesson"
+        >
           <p>{{ this.$store.state.username }}</p>
-          <p class="log-out"
-             @click="logoOutClick"
-             v-if="loginOut">退出登录</p>
+          <p class="log-out" @click="logoOutClick" v-if="loginOut">退出登录</p>
         </div>
       </transition>
     </div>
@@ -17,13 +17,13 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       loginOut: 0
     };
   },
   methods: {
-    logoOutClick () {
+    logoOutClick() {
       window.sessionStorage.clear("username");
       this.$store.commit("usernameFunc", "");
       this.$router.push({
@@ -41,7 +41,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 50px;
   .flexbox {
     display: flex;
     justify-content: space-around;
@@ -61,6 +60,9 @@ export default {
     }
   }
   .usersessonB {
+    .user-sesson {
+      margin-top: 35px;
+    }
     div {
       margin-right: 10px;
       border: 1px solid #409eff;
