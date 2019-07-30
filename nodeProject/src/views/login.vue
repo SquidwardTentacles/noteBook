@@ -77,15 +77,14 @@ export default {
             .then(res => {
               if (res.data.errcode === 0) {
                 this.$message.success(res.data.message);
-                window.sessionStorage.setItem(
-                  "username",
-                  JSON.stringify(this.ruleForm.username)
-                );
                 this.$store.commit("usernameFunc", this.ruleForm.username);
                 this.$store.commit("countChange", res.data.count);
                 this.$store.commit("changeTotal", res.data.totalUser);
                 this.$router.push({
-                  path: "/books"
+                  path: "/books",
+                  query: {
+                    user: this.ruleForm.username
+                  }
                 });
               } else {
                 this.$message.error(res.data.message);

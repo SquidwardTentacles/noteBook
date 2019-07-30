@@ -24,7 +24,9 @@ export default {
   },
   methods: {
     logoOutClick() {
-      window.sessionStorage.clear("username");
+      window.sessionStorage.clear();
+      this.$store.commit("countChange", "");
+      this.$store.commit("changeTotal", "");
       this.$store.commit("usernameFunc", "");
       this.$router.push({
         path: "/"
