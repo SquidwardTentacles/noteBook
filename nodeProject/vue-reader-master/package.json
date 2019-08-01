@@ -1,0 +1,34 @@
+{
+  "name": "vue-reader",
+  "version": "2.0.0",
+  "description": "A SPA reader, base on vue and express.",
+  "author": "tgxh2020 <tgxh2020@gmail.com>",
+  "private": true,
+  "scripts": {
+    "postinstall": "cd server && npm i && cd ../app && npm i",
+    "start": "cd app && cross-env NODE_ENV=development npm start",
+    "start-server": "rimraf views && nodemon",
+    "build": "rimraf views && cd app && cross-env NODE_ENV=production npm run build",
+    "analyze": "cd app && cross-env NODE_ENV=production ANALYZE=true npm run build"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "rimraf": "^2.6.0",
+    "nodemon": "^1.18.11"
+  },
+  "nodemonConfig": {
+    "name": "vue-reader",
+    "verbose": true,
+    "ext": "js",
+    "watch": [
+      "server"
+    ],
+    "ignore": [
+      "node_modules"
+    ],
+    "exec": "node --inspect=8888 server/app.js",
+    "env": {
+      "NODE_ENV": "development"
+    }
+  }
+}
