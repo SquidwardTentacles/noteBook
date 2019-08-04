@@ -45,42 +45,51 @@ exports.register = (req, res) => {
   let dobj = req.body;
   let sql = "select count(*) as total from userinfo where username =?";
   let data = [dobj.username];
-  db(sql, data, callback => {
-    const promise = new Promise((resolve, reject) => {
-      if (callback[0].total === 0) {
-        resolve(callback[0].total);
-      } else {
-        obj.message = "当前账号已注册";
-        obj.errcode = 1;
-        reject(obj);
-      }
-    });
-    promise
-      .then(
-        value => {
-          // 查询成功之后进行注册
-          if (value === 0) {
-            let sqlinsert = "insert into userinfo set ?";
-            db(sqlinsert, dobj, registerB => {
-              if (registerB.affectedRows === 1) {
-                obj.message = "注册成功";
-                obj.errcode = 0;
-                searchSesson(dobj, res);
-                // res.json(obj);
-              }
-            });
-          }
-        },
-        error => {
-          res.json(error);
-        }
-      )
-      .catch(err => {
-        obj.message = "操作失败";
-        obj.errcode = 0;
-        res.json(obj);
-      });
+  let sqlinsert = "insert into userinfo set ?";
+  db(sqlinsert, dobj, registerB => {
+    if (registerB.affectedRows === 1) {
+      obj.message = "注册成功";
+      obj.errcode = 0;
+      searchSesson(dobj, res);
+      res.json(obj);
+    }
   });
+  // db(sql, data, callback => {
+  //   const promise = new Promise((resolve, reject) => {
+  //     if (callback[0].total === 0) {
+  //       resolve(callback[0].total);
+  //     } else {
+  //       obj.message = "当前账号已注册";
+  //       obj.errcode = 1;
+  //       reject(obj);
+  //     }
+  //   });
+  //   promise
+  //     .then(
+  //       value => {
+  //         // 查询成功之后进行注册
+  //         if (value === 0) {
+  //           let sqlinsert = "insert into userinfo set ?";
+  //           db(sqlinsert, dobj, registerB => {
+  //             if (registerB.affectedRows === 1) {
+  //               obj.message = "注册成功";
+  //               obj.errcode = 0;
+  //               searchSesson(dobj, res);
+  //               // res.json(obj);
+  //             }
+  //           });
+  //         }
+  //       },
+  //       error => {
+  //         res.json(error);
+  //       }
+  //     )
+  //     .catch(err => {
+  //       obj.message = "操作失败";
+  //       obj.errcode = 0;
+  //       res.json(obj);
+  //     });
+  // });
 };
 // 查询所有图书数据
 exports.search = (req, res) => {

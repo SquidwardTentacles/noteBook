@@ -38,7 +38,7 @@ app.use(function(req, res, next) {
 
 app.use(router);
 
-app.listen(3100, "192.168.1.7", () => {
+app.listen(3100, "192.168.0.106", () => {
   console.log("running");
 });
 // 添加supervisor插件 启用node热更新功能 运行命令supervisor node . 或者supervisor 文件名.js
