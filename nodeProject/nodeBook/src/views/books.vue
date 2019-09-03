@@ -182,11 +182,11 @@ export default {
     },
     initdata() {
       this.axios.get(`/search?user=${this.$route.query.user}`).then(res => {
-        if (res.data.errcode == 0) {
-          this.tableData = res.data.data;
+        if (res.errcode == 0) {
+          this.tableData = res.data;
           this.getEcharts();
         } else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.message);
         }
       });
     },
@@ -194,10 +194,10 @@ export default {
       this.editBook = item;
       this.dialogTableVisible = true;
       this.axios.get(`/searchBookById?id=${item.id}`).then(res => {
-        if (res.data.errcode === 0) {
-          this.dialogData = res.data.data;
+        if (res.errcode === 0) {
+          this.dialogData = res.data;
         } else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.message);
         }
       });
     },
@@ -211,13 +211,13 @@ export default {
         this.dialogData.user = this.$store.getters.getusername;
       }
       this.axios.put(url, this.dialogData).then(res => {
-        if (res.data.errcode === 0) {
-          this.$message.success(res.data.message);
+        if (res.errcode === 0) {
+          this.$message.success(res.message);
           this.dialogTableVisible = false;
           this.dialogData = {};
           this.initdata();
         } else {
-          this.$message.error(res.data.message);
+          this.$message.error(res.message);
         }
       });
     },
@@ -235,11 +235,11 @@ export default {
           this.axios
             .delete(`/deleteBook?id=${item.id}`)
             .then(res => {
-              if (res.data.errcode === 0) {
-                this.$message.success(res.data.message);
+              if (res.errcode === 0) {
+                this.$message.success(res.message);
                 this.initdata();
               } else {
-                this.$message.error(res.data.message);
+                this.$message.error(res.message);
               }
             })
             .catch(err => {

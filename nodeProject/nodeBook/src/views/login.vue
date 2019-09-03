@@ -78,11 +78,13 @@ export default {
           this.axios
             .post(url, params)
             .then(res => {
-              if (res.data.errcode === 0) {
-                this.$message.success(res.data.message);
+              console.log(res);
+
+              if (res.errcode === 0) {
+                this.$message.success(res.message);
                 this.$store.commit("usernameFunc", this.ruleForm.username);
-                this.$store.commit("countChange", res.data.count);
-                this.$store.commit("changeTotal", res.data.totalUser);
+                this.$store.commit("countChange", res.count);
+                this.$store.commit("changeTotal", res.totalUser);
                 this.$router.push({
                   path: "/books",
                   query: {
@@ -90,8 +92,8 @@ export default {
                   }
                 });
               } else {
-                this.$message.error(res.data.message);
-                console.log(res.data.message);
+                this.$message.error(res.message);
+                console.log(res.message);
               }
             })
             .catch(err => {
