@@ -25,25 +25,38 @@ router.get('/', (req, res) => {
     students
   })
 }).post('/add', (req, res) => {
-  const form = new formidable.IncomingForm();
+  // const form = new formidable.IncomingForm();
+  // // 修改文件的保存目录 
+  // form.uploadDir = path.join(__dirname, 'public', 'imgs')
+  // // 保持原有后缀名 
+  // form.keepExtensions = true
+  // form.parse(req, (err, fields, files) => {
+  //   // 拿到用户名
+  //   console.log(fields.name);
+  //   let userName = fields.name
+  //   let imgSesson = path.parse(files.avater.path).base
+  //   // console.log(files.avater.path);  
+  //   // 拿到文件的名称
+  //   console.log(path.parse(files.avater.path).base);
+  //   students.push({ name: userName, img: 'imgs' + imgSesson })
+  //   console.log(students);
+  //   res.redirect('/')
+  // });
+
+  const form = new formidable.IncomingForm()
   // 修改文件的保存目录 
   form.uploadDir = path.join(__dirname, 'public', 'imgs')
-  // 保持原有后缀名 
+  // 保持文件的原有后缀名 
   form.keepExtensions = true
   form.parse(req, (err, fields, files) => {
-    // 拿到用户名
-    console.log(fields.name);
-    let userName = fields.name
-    let imgSesson = path.parse(files.avater.path).base
-    // console.log(files.avater.path);  
-    // 拿到文件的名称
-    console.log(path.parse(files.avater.path).base);
-    students.push({ name: userName, img: 'imgs' + imgSesson })
-    console.log(students);
     res.redirect('/')
-  });
+    // 拿到文件名 
+    let fileName = 'imgs' + '/' + path.parse(files.avater.path).base
+    console.log(fileName);
 
-  return;
+    students.push({ name: fields.name, img: fileName })
+  })
+
 })
 
 app.use(router)
