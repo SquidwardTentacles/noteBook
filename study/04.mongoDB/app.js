@@ -187,3 +187,6 @@ obj.update('test01', { age: 24 }, { age: 18 }, function (err, result) {
   console.log(err, result);
 
 })
+
+// 模块的导出 
+module.exportS = obj
