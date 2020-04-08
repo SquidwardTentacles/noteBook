@@ -48,35 +48,49 @@
     //     box.innerHTML = str;
     //   }
     // };
-    function ajaxFunc(method, url, data, back) {
-      let xhr = new XMLHttpRequest();
-      xhr.open(method, url);
-      if (method === "post")
-        xhr.setRequestHeader(
-          "Content-type",
-          "application/x-www-form-urlencoded"
-        );
-      xhr.send(data);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          back(xhr.responseText);
-        } else {
-          back("请求失败");
+    // ajax promise封装 （请求方式，请求地址，请求参数，请求头key，请求头value）请求头有默认参数 可以不转
+    function ajaxFunc(
+      method,
+      url,
+      data,
+      key = "Content-type",
+      value = "application/x-www-form-urlencoded"
+    ) {
+      return new Promise(function(resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        if (method === "post") {
+          xhr.setRequestHeader(key, value);
+          xhr.send(data);
+        } else if (method === "get" && data) {
+          url = url + "?" + data;
         }
-      };
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState >= 4) {
+            if (xhr.status <= 200) {
+              resolve(xhr.responseText);
+            } else {
+              reject("请求失败");
+            }
+          }
+        };
+      });
     }
-    ajaxFunc("post", "http://127.0.0.1:8888/add", "msg=" + msg, data => {
-      console.log(data);
-      let arr = JSON.parse(data);
-      let str = "";
-      for (let i = 0; i < arr.length; i++) {
-        let html = `
-            <li> ${arr[i].name}  ${arr[i].message}  </li>
+    ajaxFunc("post", "http://127.0.0.1:8888/add", "msg=" + msg)
+      .then(data => {
+        console.log(data);
+        data = JSON.parse(data);
+        let str = "";
+        for (let i = 0; i < data.length; i++) {
+          str += `
+            <li>${data[i].name} ${data[i].message}</li>
           `;
-        str += html;
-      }
-      let box = document.getElementById("msgBox");
-      box.innerHTML = str;
-    });
+        }
+        document.getElementById("msgBox").innerHTML = str;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 </script>
