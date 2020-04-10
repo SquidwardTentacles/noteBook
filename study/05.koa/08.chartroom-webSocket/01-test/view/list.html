@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul id="msgBox">
+      {{each msgs}}
+      <li>
+        {{$value.name}} {{$value.message}}
+      </li>
+      {{/each}}
+    </ul>
+
+    <br />
+    {{username}} <input type="text" name="newMessage" id="newMessage" />
+    <button id="messageSend">发送</button>
+  </body>
+</html>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io("http://localhost:9999");
+  socket.on("connect", function() {
+    console.log("链接上了");
+    // 客户端登录（让服务器保存用户信息 并回写相关数据）
+    // 登录 同步前后端信息
+    console.log({{id}});
+
+    socket.emit('login',{
+      id:{{id}}
+    })
+  });
+  // 代表服务器那边的emit('msg1',data)
+  socket.on("msg1", function(data) {
+    console.log(data);
+  });
+  socket.on("disconnect", function() {
+    console.log("断开链接");
+  });
+
+  let btn = document.getElementById("messageSend");
+  btn.onclick = function(e) {
+    socket.emit("sendMsg", {
+      newContent: document.getElementById("newMessage").value
+    });
+  };
+  socket.on('allmessage',function(data) {
+    console.log(data);
+
+  })
+</script>
+
+<!-- <script type="text/javascript">
+  let btn = document.getElementById("messageSend");
+  btn.onclick = function() {
+    let msg = document.getElementById("newMessage").value;
+    console.log(msg);
+    // // 创建ajax对象
+    // let xhr = new XMLHttpRequest();
+    // // 告诉ajax请求地址和请求方式
+    // xhr.open("post", "http://127.0.0.1:8888/add");
+    // // post请求需要设置请求头
+    // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // // 发送请求
+    // xhr.send("msg=" + msg);
+    // // 获取服务端与客户端的响应
+    // xhr.onreadystatechange = function() {
+    //   if (xhr.readyState === 4 && xhr.status === 200) {
+    //     console.log(xhr.responseText);
+    //     let arr = JSON.parse(xhr.responseText);
+    //     let str = "";
+    //     for (let i = 0; i < arr.length; i++) {
+    //       let html = `
+    //         <li> ${arr[i].name}  ${arr[i].message}  </li>
+    //       `;
+    //       str += html;
+    //     }
+    //     let box = document.getElementById("msgBox");
+    //     box.innerHTML = str;
+    //   }
+    // };
+    // ajax promise封装 （请求方式，请求地址，请求参数，请求头key，请求头value）请求头有默认参数 可以不转
+    function ajaxFunc(
+      method,
+      url,
+      data,
+      key = "Content-type",
+      value = "application/x-www-form-urlencoded"
+    ) {
+      return new Promise(function(resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        if (method === "post") {
+          xhr.setRequestHeader(key, value);
+          xhr.send(data);
+        } else if (method === "get" && data) {
+          url = url + "?" + data;
+        }
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState >= 4) {
+            if (xhr.status <= 200) {
+              resolve(xhr.responseText);
+            } else {
+              reject("请求失败");
+            }
+          }
+        };
+      });
+    }
+    ajaxFunc("post", "http://127.0.0.1:8888/add", "msg=" + msg)
+      .then(data => {
+        console.log(data);
+        data = JSON.parse(data);
+        let str = "";
+        for (let i = 0; i < data.length; i++) {
+          str += `
+            <li>${data[i].name} ${data[i].message}</li>
+          `;
+        }
+        document.getElementById("msgBox").innerHTML = str;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+</script> -->

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul>
+      {{each msgs}}
+      <li>{{$value.name}} {{$value.message}}</li>
+      {{/each}}
+    </ul>
+    {{username}} <input type="text" id="inputValue" />
+    <button id="btn">发送</button>
+  </body>
+</html>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io("http://localhost:9999");
+  // socket.on("connect", function() {});
+  // socket.on("event", function(data) {});
+  // socket.on("disconnect", function() {});
+  socket.on("connect", () => {
+    console.log("链接上了");
+    // 客户端的登录 让服务器保存用户信息
+    socket.emit('login',{
+      id:{{id}}
+    })
+  });
+  socket.on("msg1", function(data) {
+    console.log(data);
+  });
+  let btn = document.getElementById('btn')
+  btn.onclick = function() {
+    socket.emit('sendMsg',{
+      inputValue:document.getElementById('inputValue').value
+    })
+  }
+  socket.on('allMessage',function(data) {
+    console.log(data);
+
+  })
+  socket.on("disconnect", () => {
+    console.log("断开链接");
+  });
+</script>

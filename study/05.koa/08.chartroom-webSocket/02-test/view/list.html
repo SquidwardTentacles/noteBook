@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul>
+      {{each msgs}}
+      <li>{{$value.name}} {{$value.message}}</li>
+      {{/each}}
+    </ul>
+
+    {{username}} <input type="text" name="newMessage" id="newMessage" />
+    <button id="messageSend">发送</button>
+  </body>
+</html>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io("http://localhost:9999");
+  socket.on("connect", function() {
+    console.log("链接上了",{{id}});
+    // 客户端登录 让服务器保存用户信息 并回显相关数据 同步前后端信息
+    socket.emit('login',{
+      id:{{id}}
+    })
+  });
+  // 代表服务器那边的emit('msg1',data)
+  socket.on("msg1", function(data) {
+    console.log(data);
+  });
+  socket.on("disconnect", function() {
+    console.log("断开链接");
+  });
+  document.getElementById('messageSend').onclick = function() {
+    socket.emit('sendMsg',{
+      newContent:document.getElementById('newMessage').value
+    })
+  }
+  socket.on("allmessage",function(data) {
+    console.log(data);
+
+  })
+</script>
