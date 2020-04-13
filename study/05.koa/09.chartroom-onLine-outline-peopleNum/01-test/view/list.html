@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 查看当前聊天人数 -->
+    <div id="peoNum"></div>
+    <!-- 当前在线人数的选择框 -->
+    <div>
+      对：
+      <span>
+        <select onChange="privateTo = this.value" id="onlinePeo"><option></option></select>
+      </span>
+      说话：
+      <input id="sendMsg"></input> <button id="sendBtn">发送</button>
+    </div>
+    <ul id="msgBox">
+    </ul>
+    {{username}} <input type="text" id="inputValue" />
+    <button id="btn">发送</button>
+  </body>
+</html>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io("http://localhost:9999");
+  socket.on("connect", () => {
+    // 客户端的登录 让服务器保存用户信息
+    socket.emit('login', {
+      id: {{ id }}
+    })
+  });
+</script>
+<script src="list.js"></script>
