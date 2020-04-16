@@ -2,13 +2,7 @@
 socket.on("msg1", function (data) {
   console.log(data);
 });
-let btn = document.getElementById('btn')
-btn.onclick = function () {
 
-  socket.emit('sendMsg', {
-    inputValue: document.getElementById('inputValue').value
-  })
-}
 socket.on('allMessage', function (data) {
   let str = `<li>${data}</li>`
   document.getElementById('msgBox').innerHTML += str
@@ -27,14 +21,42 @@ socket.on('on_out_line', data => {
   document.getElementById('peoNum').innerText = '当前在线人数 : ' + arr.length
   document.getElementById('onlinePeo').innerHTML = str
 })
+// 发送私聊的消息
 let sendBtn = document.getElementById('sendBtn')
-
 sendBtn.onclick = function () {
   let value = document.getElementById('sendMsg').value
   socket.emit('sendPrivateMsg', {
     msg: value,
     privateTo
   })
+}
+// 发送群聊消息
+let btn = document.getElementById('btn')
+btn.onclick = function () {
+  socket.emit('sendMsg', {
+    inputValue: document.getElementById('inputValue').value
+  })
+}
+
+// 群聊 声明一个群聊id 保存当前用户信息是发送给哪个群 
+let groupName = ''
+// 男生组按钮 
+let male = document.getElementById('male')
+male.onclick = function () {
+  groupName = 'male'
+  socket.emit('joinGroup', groupName)
+}
+// 女生组
+let famale = document.getElementById('famale')
+famale.onclick = function () {
+  groupName = 'famale'
+  socket.emit('joinGroup', groupName)
+}
+// 群聊按钮 发送消息 
+let sendGroupMsg = document.getElementById('sendGroupMsg')
+sendGroupMsg.onclick = function () {
+  let groupMsg = document.getElementById('groupMsg').value
+  socket.emit('groupMsgSend', { groupName, groupMsg })
 }
 
 socket.on("disconnect", () => {

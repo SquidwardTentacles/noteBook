@@ -6,8 +6,19 @@
     <title>Document</title>
   </head>
   <body>
-    <!-- 查看当前聊天人数 -->
-    <div id="peoNum"></div>
+    <div>
+      <!-- 查看当前聊天人数 -->
+      <span id="peoNum"></span>
+      <!-- 组名 -->
+      <button id="male">男生组</button>
+      <button id="famale">女生组</button>
+    </div>
+    <br>
+    <div>
+      发起群聊：<input type="text" id="groupMsg">
+     <button id="sendGroupMsg">发送</button>
+    </div>
+    <hr>
     <!-- 当前在线人数的选择框 -->
     <div>
       对：
@@ -17,8 +28,10 @@
       说话：
       <input id="sendMsg"></input> <button id="sendBtn">发送</button>
     </div>
+    <hr>
     <ul id="msgBox">
     </ul>
+    <hr>
     {{username}} <input type="text" id="inputValue" />
     <button id="btn">发送</button>
   </body>

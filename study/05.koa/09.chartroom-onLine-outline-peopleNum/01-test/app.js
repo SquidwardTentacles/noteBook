@@ -8,11 +8,6 @@ const session = require('koa-session')
 const path = require('path')
 const static = require('koa-static')
 
-let msgs = [
-  { name: '小红', message: '哈哈哈' },
-  { name: '小明', message: '嘻嘻嘻' },
-  { name: '小蓝', message: '呵呵呵' },
-]
 render(app, {
   root: path.join(__dirname, 'view'),
   extname: '.html',
@@ -79,11 +74,23 @@ io.on('sendPrivateMsg', data => {
   let { msg, privateTo } = data.data
   // 通过privateTo传来的socketid拿到用户名 这个函数返回一个对象 使用es6的解构赋值 拿到用户名
   let { username } = findSessionStore(data.socket.socket.id)
-  console.log(privateTo);
-
   // koa-socket 是socket.io的语法糖 app._io就是io对象 
   app._io.to(privateTo).emit('allMessage', `${username}对你说${msg}`)
+})
 
+// 加入组按钮 
+io.on('joinGroup', ctx => {
+  // console.log(, ctx.socket.socket.id);
+  let group = ctx.data
+  ctx.socket.socket.join(group)
+})
+// 显示群聊信息 
+io.on('groupMsgSend', ctx => {
+  let { groupName, groupMsg } = ctx.data
+  // 向群发送消息 
+  let socketid = ctx.socket.socket.id
+  let { username } = findSessionStore(socketid)
+  app._io.to(groupName).emit('allMessage', `${groupName === 'male' ? '男生组' : '女生组'}${username}说${groupMsg}`)
 })
 // socket
 
@@ -106,7 +113,6 @@ router.get('/', async ctx => {
     // console.log(ctx.session.user);
 
     ctx.render('list', {
-      msgs,
       id: ctx.session.user.id,
       username: ctx.session.user.username
     })
