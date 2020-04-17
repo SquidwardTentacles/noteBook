@@ -1,11 +1,6 @@
 var mysql = require('mysql');
-var pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'goods'
-});
+const { dbConfig } = require('../config')
+var pool = mysql.createPool(dbConfig);
 let db = {}
 db.q = function (sql, data, callback) {
   return new Promise((resolve, reject) => {
