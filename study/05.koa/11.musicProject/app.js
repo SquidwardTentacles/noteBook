@@ -7,32 +7,16 @@ const static = require('koa-static')
 const { port, templateConfig, staticConfig, sessionStore, uploadDir } = require('./config')
 const session = require('koa-session')
 const formidable = require('koa-formidable')
-
 const musicRouter = require('./routers/music')
 const userRouter = require('./routers/user')
 // 模板的设置综合到config
 render(app, templateConfig)
 
 // 优雅的处理错误
-app.use(async (ctx, next) => {
-  // 先放行 
-  try {
-    await next()
-  } catch (e) {
-    // 根据自己的code状态码来进行相应的更改 
-    ctx.render('error', { code: 002, mag: 'err' })
-  }
-})
-
-
+app.use(require('./middleware/error.js')())
 // 给static重写url （此静态资源为public文件夹之下的文件 页面引用时 不需要写public路径 为了能够携带public 这里拦截带有public的路径 将public替换为空）
-app.use(async (ctx, next) => {
-  if (ctx.url.startsWith('/public')) {
-    ctx.url = ctx.url.replace('/public', '')
-  }
-  await next()
-
-})
+let reWriteUrl = require('./middleware/rewriteurl')
+app.use(reWriteUrl(require('./reWriteConfig')))
 
 // 处理文件及字符串
 app.use(formidable({
