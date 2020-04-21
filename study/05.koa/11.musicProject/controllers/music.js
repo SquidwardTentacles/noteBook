@@ -52,8 +52,14 @@ module.exports = {
   },
   // 更新音乐
   uploadMusic: async (ctx, next) => {
+    console.log(ctx.session.user);
+
     let uploadMObj = optUpload(ctx)
     // 更新音乐需要拿到id
+    if (!ctx.request.body.id) {
+      ctx.throw('id为必选字段')
+      return
+    }
     uploadMObj.id = parseInt(ctx.request.body.id)
     // 进行数据库操作
     let uploadBack = await musicModel.uploadMusic(uploadMObj)
@@ -62,5 +68,22 @@ module.exports = {
     } else {
       ctx.body = { code: 002, msg: '音乐更新失败' }
     }
+  },
+  // 删除音乐
+  /** 
+   * id
+   */
+  deleteMusic: async (ctx, next) => {
+    let id = parseInt(ctx.query.id)
+    if (!id) {
+      ctx.throw('id为必选字段')
+      return
+    }
+    let backSql = await musicModel.deleteMusic(id)
+    if (backSql.affectedRows !== 1) {
+      ctx.body = { code: 002, msg: '歌曲删除失败' }
+      return
+    }
+    ctx.body = { code: 001, msg: '歌曲删除成功' }
   }
 }

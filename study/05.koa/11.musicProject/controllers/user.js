@@ -1,5 +1,6 @@
 // controllers (c分发)
 const modelUser = require('../models/user')
+const captchapng = require('captchapng2');
 module.exports = {
   // 响应注册页面
   register: async (ctx, next) => {
@@ -41,11 +42,21 @@ module.exports = {
         return
       }
       ctx.body = { code: 001, msg: '登录成功' }
-      // 保存session
+      // 保存session 如果用户名 密码正确则返回用户信息
       ctx.session.user = loginBack[0]
     } catch (e) {
       console.log('doLogin', e);
       ctx.throw({ code: 002, msg: e })
     }
+  },
+  // 退出登录
+  loginout: async (ctx, next) => {
+
+  },
+  getPic: async (ctx, next) => {
+    let rand = parseInt(Math.random() * 9000 + 1000);
+    let png = new captchapng(80, 30, rand); // width,height, numeric captcha
+    // res.writeHead(200, { 'Content-Type': 'image/png'});
+    ctx.body = png.getBuffer()
   }
 } 
