@@ -30,9 +30,34 @@ function optUpload (ctx) {
 }
 module.exports = {
   // 显示音乐首页
-  index: async (ctx, next) => ctx.render('index'),
+  index: async (ctx, next) => {
+    let uid = ctx.query.uid
+    if (!uid) {
+      ctx.body = { code: 002, msg: 'id为必选字段' }
+      return
+    }
+    let sqlback = await musicModel.selectMusicByuid(uid)
+    if (!sqlback.length) {
+      ctx.body = { code: 002, msg: '未查询到相关歌曲信息' }
+      return
+    }
+    ctx.render('index', {
+      music: sqlback
+    })
+  },
   // 音乐编辑页面
-  edit: async (ctx, next) => ctx.render('edit'),
+  edit: async (ctx, next) => {
+    let id = ctx.query.id
+    let sqlback = await musicModel.musicEdit(id)
+    if (!sqlback.length) {
+      ctx.body = { code: 002, msg: '未查询到歌曲信息' }
+      return
+    }
+    ctx.render('edit', {
+      music: sqlback[0]
+    })
+
+  },
   // 添加音乐页面
   add: async (ctx, next) => ctx.render('add'),
   // 添加音乐操作
