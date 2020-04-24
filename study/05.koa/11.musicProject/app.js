@@ -1,7 +1,6 @@
 const Koa = require('koa')
 const app = new Koa()
 const render = require('koa-art-template')
-const path = require('path')
 const bodyparser = require('koa-bodyparser')
 const static = require('koa-static')
 const { port, templateConfig, staticConfig, sessionStore, uploadDir } = require('./config')

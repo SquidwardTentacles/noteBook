@@ -39,6 +39,7 @@ module.exports = {
     let sqlback = await musicModel.selectMusicByuid(uid)
     if (!sqlback.length) {
       ctx.body = { code: 002, msg: '未查询到相关歌曲信息' }
+      ctx.render('index')
       return
     }
     ctx.render('index', {

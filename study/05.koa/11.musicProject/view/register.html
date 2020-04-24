@@ -1,6 +1,19 @@
 {{extend './layout/layout.html'}} {{block 'content'}}
 <link href="/public/css/register.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript"></script>
+<style type="text/css">
+  #pwd-level div {
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    float: left;
+  }
+
+  #pwd-level span {
+    display: inline-block;
+    float: left;
+  }
+</style>
 <div class="aw-register-box">
   <div class="mod-head">
     <a href="/"></a>
@@ -19,6 +32,7 @@
             name="username"
             placeholder="用户名"
             value=""
+            id="username"
           />
         </li>
         <li>
@@ -35,6 +49,7 @@
             class="aw-register-pwd form-control"
             type="password"
             name="password"
+            id="password"
             placeholder="密码"
           />
         </li>
@@ -50,7 +65,7 @@
           <input
             type="text"
             class="form-control"
-            name="vcode"
+            name="v_code"
             placeholder="验证码"
           />
         </li>
@@ -77,4 +92,88 @@
     </form>
   </div>
 </div>
+
+<script>
+  // 验证用户名是否存在
+  let doRegister = (function () {
+    // 声明一个全局函数 保存定时器 以便于清除 ->声明全局函数造成了变量污染 -> 使用闭包
+    let timer; //内层函数访问外变量
+    let preName;
+    return function (e) {
+      let val = e.target.value.trim();
+      clearTimeout(timer);
+      if (preName === val || !val) return;
+      timer = setTimeout(() => {
+        $.ajax({
+          url: "/user/do-register",
+          type: "post",
+          data: { username: val },
+          success: function (data) {
+            preName = val;
+            if (data.code === 2) {
+              alert(data.msg);
+            }
+          },
+        });
+      }, 500);
+    };
+  })();
+  // 用户名的键盘事件
+  $("#username").on("keyup", doRegister);
+
+  let pwd = (function () {
+    return function (e) {
+      // 验证密码强度
+      console.log(e.target.value);
+      let val = e.target.value;
+      let [test1, test2, test3, num, collorArr, ele] = [
+        /\d/,
+        /[a-zA-Z]/,
+        /\W/,
+        0,
+        ["yellowGreen", "skyblue", "red"],
+        $("#pwd-level").find("div"),
+      ];
+      for (let i = 0; i < ele.length; i++) {
+        ele[i].style.backgroundColor = "";
+      }
+      if (test1.test(val)) num++;
+      if (test2.test(val)) num++;
+      if (test3.test(val)) num++;
+      for (let i = 0; i < num; i++) {
+        ele[i].style.backgroundColor = collorArr[i];
+      }
+      console.log(num);
+    };
+  })();
+  // 密码的键盘事件
+  $("#password").on("keyup", pwd);
+
+  // 提交表单
+  $("#register_form").on("submit", function (e) {
+    // 阻止默认事件
+    e.preventDefault();
+    // 获取到所有表单数据
+
+    let formdata = $(this).serialize();
+    $.ajax({
+      url: "/user/do-register",
+      type: "post",
+      data: formdata,
+      dataType: JSON,
+      success: function (back) {
+        console.log("tijiao");
+        console.log(back, "dss");
+
+        if (back.code === 1) {
+          if (confirm("是否去登录")) {
+            window.Location.href = "/user/login";
+          }
+        } else {
+          alert(back.msg);
+        }
+      },
+    });
+  });
+</script>
 {{/block}}

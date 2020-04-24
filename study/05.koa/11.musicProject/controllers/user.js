@@ -9,7 +9,7 @@ module.exports = {
   // 用户的注册验证
   doRegister: async (ctx, next) => {
     try {
-      let { username, password, email } = ctx.request.body
+      let username = ctx.request.body.username
       let userRegister = await modelUser.userRegister(username)
       if (userRegister.length > 0) {
         // 注册过
@@ -17,6 +17,8 @@ module.exports = {
         return
       }
       ctx.body = { code: 001, msg: '可以注册' }
+      if (!ctx.request.body.password) return
+      let { password, email } = ctx.request.body
       // 如果可以注册 就调用相关方法进行注册
       let ifRegister = await modelUser.doRegister(username, password, email)
       if (ifRegister !== 1) {
@@ -41,7 +43,7 @@ module.exports = {
         ctx.body = { code: 002, msg: '用户名或密码错误' }
         return
       }
-      ctx.body = { code: 001, msg: '登录成功' }
+      ctx.body = { code: 001, msg: '登录成功', uid: loginBack[0].id }
       // 保存session 如果用户名 密码正确则返回用户信息
       ctx.session.user = loginBack[0]
     } catch (e) {

@@ -1,6 +1,6 @@
 {{extend './layout/layout.html'}} {{block 'content'}}
 <div class="container">
-  <form id="form" method="post" action="/">
+  <form id="formSubmit" method="post" action="/">
     <div class="form-group">
       <label for="">歌曲编号</label>
       <input
@@ -39,10 +39,24 @@
     </div>
     <div class="form-group">
       <label for="">歌曲文件</label>
-      <input type="file" name="file" />
+      <input type="file" id="music-file" name="file" />
       <p class="help-block">请上传歌曲文件.</p>
     </div>
     <button type="submit" class="btn btn-success">点击添加</button>
   </form>
 </div>
+<script>
+  (function () {
+    let file;
+    $("#music-file").on("change", function (e) {
+      console.log("chang");
+
+      console.log(this.files[0]);
+    });
+    $("#formSubmit").on("submit", function (e) {
+      e.preventDefault();
+      console.log($(this).serialize());
+    });
+  })();
+</script>
 {{/block}}

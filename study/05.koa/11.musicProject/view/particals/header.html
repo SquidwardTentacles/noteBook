@@ -24,5 +24,12 @@
   <div class="page-header">
     <h1>首页--<small>我的音乐</small></h1>
   </div>
-  <a href="/addMusic" class="btn btn-success">添加音乐</a>
+  <a href="javascript:;" id="addMusic" class="btn btn-success">添加音乐</a>
 </div>
+
+<script>
+  $("#addMusic").on("click", function () {
+    window.location.href =
+      "/music/add?uid=" + window.location.href.split("=")[1];
+  });
+</script>

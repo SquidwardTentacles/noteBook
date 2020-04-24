@@ -57,4 +57,33 @@
     </div>
   </div>
 </div>
+<script>
+  $("#login_form").on("submit", function (e) {
+    e.preventDefault(); //阻止默认事件
+    let val = {
+      username: $("#aw-login-user-name").val(),
+      password: $("#aw-login-user-password").val(),
+    };
+    if (!val.username) {
+      alert("用户名不能为空");
+      return;
+    } else if (!val.password) {
+      alert("密码不能为空");
+      return;
+    }
+    $.ajax({
+      url: "/user/do-login",
+      type: "post",
+      // dataType: JSON,
+      data: val,
+      success: function (back) {
+        if (back.code === 1) {
+          window.location.href = "/music/index?uid=" + back.uid;
+        } else {
+          alert(back.msg);
+        }
+      },
+    });
+  });
+</script>
 {{/block}}
